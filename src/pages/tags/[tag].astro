@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+import BlogCard from "../../components/BlogCard.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getUniqueTags } from "../../utils/getUniqueTags";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const tags = getUniqueTags(posts);
+
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      posts: posts
+        .filter((post) => post.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Layout title={`Posts tagged with "${tag}"`}>
+  <section>
+    <div class="mb-8">
+      <a href="/tags" class="text-accent hover:underline">&larr; All Tags</a>
+      <h1 class="mt-4 text-3xl font-bold">
+        Posts tagged with <span class="text-accent">#{tag}</span>
+      </h1>
+      <p class="text-foreground/80 mt-1">
+        {posts.length} post{posts.length > 1 ? "s" : ""}
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {posts.map((post) => <BlogCard post={post} />)}
+    </div>
+  </section>
+</Layout>

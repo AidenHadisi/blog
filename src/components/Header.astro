@@ -1,0 +1,23 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+---
+
+<header
+  class="bg-background/80 sticky top-0 z-50 border-b border-border shadow-sm backdrop-blur-md"
+>
+  <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+    <a
+      href="/"
+      class="text-2xl font-bold tracking-tight transition-colors duration-200 hover:text-accent"
+    >
+      Aiden's Blog
+    </a>
+
+    <nav class="flex items-center gap-6">
+      <a href="/" class="hover:text-accent">Home</a>
+      <a href="/tags" class="hover:text-accent">Tags</a>
+      <a href="/about" class="hover:text-accent">About</a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
