@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = "Astro Blog",
-  description = "A clean and modern blog built with Astro and Markdown",
+  title = "Aiden's Blog",
+  description = "Personal blog where I share my expericnes and journey through life.",
 } = Astro.props;
 ---
 
@@ -21,12 +21,12 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
+    <link rel="icon" href="/logo.png" />
     <title>{title}</title>
   </head>
   <body>
     <Header />
-    <main class="mx-auto max-w-3xl px-4 py-8">
+    <main class="mx-auto max-w-5xl px-4 py-8">
       <slot />
     </main>
     <Footer />

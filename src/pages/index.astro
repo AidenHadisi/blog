@@ -6,35 +6,18 @@ import Layout from "../layouts/Layout.astro";
 // Get all blog posts and sort them by date
 const allPosts = await getCollection("blog");
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Get featured posts
-const featuredPosts = sortedPosts.filter((post) => post.data.featured);
 ---
 
-<Layout title="Aiden's Blog" description="A clean and modern blog built with Astro and Markdown">
+<Layout>
   <section>
     <div class="mb-8">
       <h1 class="text-4xl font-bold">Welcome to my Blog</h1>
       <p class="text-foreground/80 mt-2">
-        Personal blog where I share my expericnes and journey through life.
+        Personal blog where I share my experiences and journey through life.
       </p>
     </div>
 
-    {
-      featuredPosts.length > 0 && (
-        <div class="mb-12">
-          <h2 class="mb-4 text-2xl font-semibold">Featured Posts</h2>
-          <div class="space-y-6">
-            {featuredPosts.map((post) => (
-              <BlogCard post={post} />
-            ))}
-          </div>
-        </div>
-      )
-    }
-
     <div>
-      <h2 class="mb-4 text-2xl font-semibold">All Posts</h2>
       <div class="space-y-6">
         {sortedPosts.map((post) => <BlogCard post={post} />)}
       </div>

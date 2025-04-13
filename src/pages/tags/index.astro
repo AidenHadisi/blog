@@ -1,10 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { getUniqueTags } from "../../utils/getUniqueTags";
 
 const posts = await getCollection("blog");
-const tags = getUniqueTags(posts);
+// Extract all tags from all posts and get unique values, sorted alphabetically
+const allTags = posts.flatMap((post) => post.data.tags);
+const tags = [...new Set(allTags)].sort((a, b) => a.localeCompare(b));
 ---
 
 <Layout title="Tags" description="Browse all topics covered in the blog">
