@@ -1,4 +1,6 @@
-module.exports = {
+import type { Config } from 'prettier';
+
+const config: Config = {
   plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
   overrides: [
     {
@@ -15,7 +17,9 @@ module.exports = {
   trailingComma: "es5",
   useTabs: false,
   // Tailwind class sorting
-  tailwindConfig: "./tailwind.config.mjs",
+  tailwindConfig: "./tailwind.config.ts",
   // Astro-specific options
   astroAllowShorthand: true,
 };
+
+export default config;

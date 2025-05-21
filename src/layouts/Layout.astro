@@ -10,7 +10,7 @@ interface Props {
 
 const {
   title = "Aiden's Blog",
-  description = "Personal blog where I share my expericnes and journey through life.",
+  description = "Personal blog where I share my experiences and journey through life.",
 } = Astro.props;
 ---
 
@@ -23,10 +23,27 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" href="/logo.png" />
     <title>{title}</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL("/logo.png", Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL("/logo.png", Astro.url)} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={Astro.url} />
   </head>
   <body>
     <Header />
-    <main class="mx-auto max-w-5xl px-4 py-8">
+    <main class="flex items-center justify-center px-4 py-8">
       <slot />
     </main>
     <Footer />

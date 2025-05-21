@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root,
-html[data-theme="light"] {
+:root {
   --background: #f4fbf5;
   --foreground: #333433;
   --accent: #06d001;
@@ -11,7 +10,7 @@ html[data-theme="light"] {
   --border: #059212;
 }
 
-html[data-theme="dark"] {
+.dark {
   --background: #212737;
   --foreground: #d3dced;
   --accent: #9bec00;
@@ -60,49 +59,41 @@ html[data-theme="dark"] {
 /* Typography */
 @layer components {
   .prose {
-    @apply max-w-none text-foreground;
-  }
+    * {
+      @apply text-foreground;
+    }
 
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4,
-  .prose h5,
-  .prose h6 {
-    @apply font-bold text-foreground;
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply font-bold;
+    }
 
-  .prose h1 {
-    @apply text-3xl md:text-4xl;
-  }
+    h1 {
+      @apply text-3xl md:text-4xl;
+    }
 
-  .prose h2 {
-    @apply text-2xl md:text-3xl;
-  }
+    h2 {
+      @apply text-2xl md:text-3xl;
+    }
 
-  .prose h3 {
-    @apply text-xl md:text-2xl;
-  }
+    h3 {
+      @apply text-xl md:text-2xl;
+    }
 
-  .prose p {
-    @apply my-4 text-foreground;
-  }
+    p {
+      @apply my-4 text-foreground;
+    }
 
-  .prose ul,
-  .prose ol,
-  .prose li,
-  .prose blockquote,
-  .prose strong,
-  .prose em,
-  .prose code {
-    @apply text-foreground;
-  }
+    a {
+      @apply text-accent decoration-accent decoration-2 underline-offset-2 hover:underline;
+    }
 
-  .prose a {
-    @apply text-accent decoration-accent decoration-2 underline-offset-2 hover:underline;
-  }
-
-  .prose pre {
-    @apply rounded-md border border-muted bg-muted p-4;
+    pre {
+      @apply rounded-md border border-muted bg-muted p-4;
+    }
   }
 }
