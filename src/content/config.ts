@@ -9,6 +9,8 @@ const blog = defineCollection({
     author: z.string().default("Aiden Hadisi"),
     draft: z.boolean().optional(),
     tags: z.array(z.string()).default([]),
+    category: z.string().default("General"),
+    subcategory: z.string().optional(),
   }),
 });
 

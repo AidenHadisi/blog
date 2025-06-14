@@ -1,0 +1,291 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import ThemeToggle from "./ThemeToggle.astro";
+import { Search, Home, Tag, User, ChevronRight, Menu, X } from "lucide-astro";
+
+// Server-side data preparation
+const allPosts = await getCollection("blog");
+const currentSlug = Astro.url.pathname.replace("/posts/", "");
+
+// Simple category grouping with date sorting
+const categoryMap = new Map<string, CollectionEntry<"blog">[]>();
+allPosts.forEach((post) => {
+  const category = post.data.category;
+  if (!categoryMap.has(category)) categoryMap.set(category, []);
+  categoryMap.get(category)?.push(post);
+});
+
+const categories = Array.from(categoryMap.entries()).map(([name, posts]) => ({
+  name,
+  posts: posts.sort(
+    (a, b) =>
+      new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+  ),
+  isActive: posts.some((p: CollectionEntry<"blog">) => p.slug === currentSlug),
+}));
+
+// Navigation items
+const navItems = [
+  { href: "/", icon: Home, label: "Home" },
+  { href: "/tags", icon: Tag, label: "All Tags" },
+  { href: "/about", icon: User, label: "About" },
+];
+
+// Posts data for client-side search
+const searchablePosts = allPosts.map((p) => ({
+  title: p.data.title,
+  description: p.data.description,
+  slug: p.slug,
+  category: p.data.category || "General",
+  pubDate: p.data.pubDate,
+}));
+---
+
+<aside
+  id="sidebar"
+  class="fixed left-0 top-0 h-full w-80 bg-background border-r border-border transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto"
+  data-current-slug={currentSlug}
+>
+  <!-- Header -->
+  <header class="p-6 border-b border-border flex items-center justify-between">
+    <a
+      href="/"
+      class="flex items-center gap-2 text-lg font-bold tracking-tight transition-colors duration-200 hover:text-accent"
+    >
+      <img
+        src="/logo.png"
+        alt="Blog Logo"
+        width="32"
+        height="32"
+        class="rounded-sm"
+      />
+      <span>Aiden's Blog</span>
+    </a>
+
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+      <button
+        id="sidebar-close"
+        class="p-2 rounded-md hover:bg-muted transition-colors lg:hidden"
+      >
+        <X class="w-5 h-5" />
+      </button>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="p-6 border-b border-border">
+    <div class="relative">
+      <Search class="absolute left-3 top-2.5 w-5 h-5" />
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search posts..."
+        class="w-full px-4 py-2 pl-10 bg-muted border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+      />
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="p-6 border-b border-border space-y-2">
+    {
+      navItems.map(({ href, icon: Icon, label }) => (
+        <a
+          href={href}
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+        >
+          <Icon class="w-5 h-5" />
+          <span>{label}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <!-- Categories -->
+  <section class="p-6">
+    <h3 class="text-lg font-semibold mb-4">Categories</h3>
+    <div id="categories-list">
+      {
+        categories.map(({ name, posts, isActive }) => (
+          <details
+            open={isActive}
+            class="mb-2 [&[open]_.chevron-icon]:rotate-90"
+          >
+            <summary class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-muted transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <div class="flex items-center gap-2">
+                <ChevronRight class="chevron-icon w-4 h-4 transition-transform" />
+                <span class="font-medium">{name}</span>
+              </div>
+              <span class="text-xs bg-muted px-2 py-1 rounded-full">
+                {posts.length}
+              </span>
+            </summary>
+
+            <ul class="ml-6 mt-2 space-y-2">
+              {posts.map((post: CollectionEntry<"blog">) => (
+                <li>
+                  <a
+                    href={`/posts/${post.slug}`}
+                    class:list={[
+                      "block px-3 py-2 text-sm rounded-md transition-colors hover:text-accent hover:bg-muted text-left",
+                      post.slug === currentSlug && "text-accent font-medium",
+                    ]}
+                  >
+                    <div class="font-medium leading-tight">
+                      {post.data.title}
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                      {new Date(post.data.pubDate).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Search Results -->
+  <section id="search-results" class="hidden p-6 border-t border-border">
+    <h3 class="text-lg font-semibold mb-4">Search Results</h3>
+    <div id="search-results-content" class="space-y-2"></div>
+  </section>
+</aside>
+
+<!-- Mobile overlay and toggle -->
+<div
+  id="sidebar-overlay"
+  class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"
+>
+</div>
+<button
+  id="sidebar-toggle"
+  class="fixed bottom-4 left-4 z-50 p-2 bg-background border border-border rounded-md shadow-lg hover:bg-muted transition-colors lg:hidden"
+>
+  <Menu class="w-6 h-6" />
+</button>
+
+<script define:vars={{ searchablePosts }} is:inline>
+  // Simple, clean sidebar controller
+  class SidebarController {
+    constructor() {
+      this.sidebar = document.getElementById("sidebar");
+      this.overlay = document.getElementById("sidebar-overlay");
+      this.toggleButton = document.getElementById("sidebar-toggle");
+      this.searchInput = document.getElementById("search-input");
+      this.searchResults = document.getElementById("search-results");
+      this.searchContent = document.getElementById("search-results-content");
+      this.categoriesList = document.getElementById("categories-list");
+
+      this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+      // Mobile toggle
+      document
+        .getElementById("sidebar-toggle")
+        ?.addEventListener("click", () => this.open());
+      document
+        .getElementById("sidebar-close")
+        ?.addEventListener("click", () => this.close());
+      this.overlay?.addEventListener("click", () => this.close());
+
+      // Search
+      this.searchInput?.addEventListener(
+        "input",
+        this.debounce((e) => {
+          this.handleSearch(e.target.value);
+        }, 300)
+      );
+    }
+
+    open() {
+      this.sidebar?.classList.remove("-translate-x-full");
+      this.overlay?.classList.remove("hidden");
+      this.toggleButton?.classList.add("hidden");
+      document.body.style.overflow = "hidden";
+    }
+
+    close() {
+      this.sidebar?.classList.add("-translate-x-full");
+      this.overlay?.classList.add("hidden");
+      this.toggleButton?.classList.remove("hidden");
+      document.body.style.overflow = "";
+    }
+
+    handleSearch(query) {
+      const trimmedQuery = query.trim().toLowerCase();
+
+      if (!trimmedQuery) {
+        this.clearSearch();
+        return;
+      }
+
+      const results = searchablePosts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(trimmedQuery) ||
+          post.description.toLowerCase().includes(trimmedQuery) ||
+          post.category.toLowerCase().includes(trimmedQuery)
+      );
+
+      this.showSearchResults(results);
+    }
+
+    showSearchResults(results) {
+      this.categoriesList.classList.add("hidden");
+      this.searchResults.classList.remove("hidden");
+
+      if (results.length === 0) {
+        this.searchContent.innerHTML = '<p class="text-sm">No posts found.</p>';
+        return;
+      }
+
+      this.searchContent.innerHTML = results
+        .map(
+          (post) => `
+        <a href="/posts/${post.slug}" class="block px-3 py-2 text-sm rounded-md transition-colors hover:text-accent hover:bg-muted text-left">
+          <div class="font-medium leading-tight">${post.title}</div>
+          <div class="text-xs text-gray-500 mt-1">
+            ${new Date(post.pubDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </div>
+        </a>
+      `
+        )
+        .join("");
+    }
+
+    clearSearch() {
+      if (this.searchInput) this.searchInput.value = "";
+      this.searchResults?.classList.add("hidden");
+      this.categoriesList?.classList.remove("hidden");
+    }
+
+    debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    new SidebarController();
+  });
+</script>

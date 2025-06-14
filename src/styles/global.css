@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #f4fbf5;
+  --background: #f8f9f8;
   --foreground: #333433;
   --accent: #06d001;
   --muted: #e6e6e6;
@@ -16,14 +16,6 @@
   --accent: #9bec00;
   --muted: #343f60bf;
   --border: #f3ff90;
-}
-
-:root {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
 }
 
 @layer base {
