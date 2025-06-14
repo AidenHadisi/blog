@@ -10,13 +10,15 @@ const tags = [...new Set(allTags)].sort((a, b) => a.localeCompare(b));
 
 <Layout title="Tags" description="Browse all topics covered in the blog">
   <section>
-    <h1 class="mb-8 text-3xl font-bold">Tags</h1>
+    <h1 class="mb-8 text-2xl sm:text-3xl font-bold">Tags</h1>
 
     <ul class="flex flex-wrap gap-4">
       {
         tags.map((tag) => {
           // Count posts with this tag
-          const count = posts.filter((post) => post.data.tags.includes(tag)).length;
+          const count = posts.filter((post) =>
+            post.data.tags.includes(tag)
+          ).length;
 
           return (
             <li>
@@ -25,7 +27,9 @@ const tags = [...new Set(allTags)].sort((a, b) => a.localeCompare(b));
                 class="flex items-center rounded-lg border border-border bg-background px-4 py-2 transition-colors hover:border-accent hover:text-accent"
               >
                 <span>{tag}</span>
-                <span class="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs">{count}</span>
+                <span class="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs">
+                  {count}
+                </span>
               </a>
             </li>
           );

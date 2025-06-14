@@ -6,7 +6,8 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, author, tags, category, subcategory } = post.data;
+const { title, description, pubDate, author, tags, category, subcategory } =
+  post.data;
 
 const formattedDate = new Date(pubDate).toLocaleDateString("en-us", {
   year: "numeric",
@@ -21,13 +22,15 @@ const formattedDate = new Date(pubDate).toLocaleDateString("en-us", {
   <div class="p-6">
     <a href={`/posts/${post.slug}/`} class="block">
       <h2
-        class="text-xl font-bold tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent md:text-2xl"
+        class="text-lg font-bold tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent sm:text-xl md:text-2xl"
       >
         {title}
       </h2>
     </a>
 
-    <div class="text-foreground/70 mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+    <div
+      class="text-foreground/70 mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm"
+    >
       <time datetime={pubDate.toISOString()} class="flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +61,8 @@ const formattedDate = new Date(pubDate).toLocaleDateString("en-us", {
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          ></path>
         </svg>
         {author}
       </span>
@@ -70,8 +74,18 @@ const formattedDate = new Date(pubDate).toLocaleDateString("en-us", {
     {
       (category || subcategory) && (
         <div class="mt-3 flex items-center text-sm text-accent">
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+          <svg
+            class="w-4 h-4 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+            />
           </svg>
           <span>{category || "General"}</span>
           {subcategory && (

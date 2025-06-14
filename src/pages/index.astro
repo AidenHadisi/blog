@@ -5,14 +5,18 @@ import Layout from "../layouts/Layout.astro";
 
 // Get all blog posts and sort them by date
 const allPosts = await getCollection("blog");
-const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <Layout>
   <section>
     <div class="mb-8">
-      <h1 class="text-4xl font-bold">Welcome to my Blog</h1>
-      <p class="text-foreground/80 mt-2">
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold">
+        Welcome to my Blog
+      </h1>
+      <p class="text-foreground/80 mt-2 text-sm sm:text-base">
         Personal blog where I share my experiences and journey through life.
       </p>
     </div>

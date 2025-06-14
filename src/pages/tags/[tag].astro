@@ -27,10 +27,10 @@ const { posts } = Astro.props;
   <section>
     <div class="mb-8">
       <a href="/tags" class="text-accent hover:underline">&larr; All Tags</a>
-      <h1 class="mt-4 text-3xl font-bold">
+      <h1 class="mt-4 text-lg sm:text-2xl md:text-3xl font-bold">
         Posts tagged with <span class="text-accent">#{tag}</span>
       </h1>
-      <p class="text-foreground/80 mt-1">
+      <p class="text-foreground/80 mt-1 text-xs sm:text-sm md:text-base">
         {posts.length} post{posts.length > 1 ? "s" : ""}
       </p>
     </div>

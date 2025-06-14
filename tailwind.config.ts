@@ -6,11 +6,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        accent: "var(--accent)",
-        muted: "var(--muted)",
-        border: "var(--border)",
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
+        accent: "hsl(var(--accent) / <alpha-value>)",
+        muted: "hsl(var(--muted) / <alpha-value>)",
+        border: "hsl(var(--border) / <alpha-value>)",
       },
     },
   },

@@ -2,29 +2,41 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="404 - Page Not Found" description="The page you are looking for does not exist">
+<Layout
+  title="404 - Page Not Found"
+  description="The page you are looking for does not exist"
+>
   <section class="flex flex-col items-center justify-center py-12">
-    <h1 class="text-6xl font-bold text-accent mb-4">404</h1>
-    <h2 class="text-2xl font-semibold mb-6">Page Not Found</h2>
-    <p class="text-foreground/80 mb-8 text-center max-w-md">
-      The page you're looking for doesn't exist or has been moved to another location.
+    <h1
+      class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-accent mb-4"
+    >
+      404
+    </h1>
+    <h2 class="text-lg sm:text-xl md:text-2xl font-semibold mb-6">
+      Page Not Found
+    </h2>
+    <p
+      class="text-foreground/80 mb-8 text-center max-w-md text-xs sm:text-sm md:text-base"
+    >
+      The page you're looking for doesn't exist or has been moved to another
+      location.
     </p>
-    <a 
-      href="/" 
+    <a
+      href="/"
       class="inline-flex items-center gap-2 bg-accent text-background px-6 py-2 rounded-md hover:opacity-90 transition-opacity"
     >
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="20" 
-        height="20" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="2" 
-        stroke-linecap="round" 
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
         stroke-linejoin="round"
       >
-        <path d="m15 18-6-6 6-6"/>
+        <path d="m15 18-6-6 6-6"></path>
       </svg>
       Return Home
     </a>
